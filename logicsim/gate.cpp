@@ -27,6 +27,11 @@ And2Gate::And2Gate(Wire* a, Wire* b, Wire* o) : Gate(2,o)
     wireInput(1,b);
 }
 
+NotGate::NotGate(Wire* a, Wire* o) : Gate(1, o)
+{
+	wireInput(0, a);
+}
+
 Event* And2Gate::update(uint64_t current_time)
 {
     
@@ -85,6 +90,31 @@ Event* Or2Gate::update(uint64_t current_time)
 		uint64_t next = current_time + m_delay;
 		e = new Event {next,m_output,state};
          
+	}
+  return e;
+}
+
+Event* NotGate::update(uint64_t current_time)
+{
+
+	Event* e = nullptr;
+	char state = 'X';
+	for(auto w : m_inputs){
+		char in = w->getState();
+		if(in == '1'){
+			state = '0';
+		}
+		else if(in == '0'){
+			state = '1';
+		}
+	}
+
+	if(state != m_current_state)
+	{
+    m_current_state = state;
+		uint64_t next = current_time + m_delay;
+		e = new Event {next,m_output,state};
+        
 	}
   return e;
 }
