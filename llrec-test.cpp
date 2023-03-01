@@ -4,6 +4,42 @@
 #include "llrec.h"
 using namespace std;
 
+struct IsEven
+{
+    bool operator()(int num) {
+        return (num % 2) == 0;
+    }
+};
+
+struct IsOdd
+{
+    bool operator()(int num) {
+        return (num % 2) != 0;
+    }
+};
+
+bool IsNeg(int v)
+{ return v < 0; }
+
+struct IsLessEquals
+{
+	int num2;
+	IsLessEquals(int val) : num2(val){}
+    bool operator()(int num1) {
+        return (num1 <= num2);
+    }
+};
+
+struct IsGreater
+{
+	int num2;
+	IsGreater(int val) : num2(val){}
+    bool operator()(int num1) {
+        return (num1 > num2);
+    }
+};
+
+
 /**
  * Reads integers (separated by whitespace) from a file
  * into a linked list.
@@ -45,11 +81,14 @@ Node* readList(const char* filename)
 
 void print(Node* head)
 {
+  
     while(head) {
         cout << head->val << " ";
         head = head->next;
     }
     cout << endl;
+  
+
 }
 
 void dealloc(Node* head)
@@ -84,10 +123,17 @@ int main(int argc, char* argv[])
     Node* head = readList(argv[1]);
     cout << "Original list: ";
     print(head);
+    Node* smaller;
+    Node* larger;
 
     // Test out your linked list code
 
+    llfilter(head, IsOdd());
 
+    cout << "New List: " << endl;
+
+    print(head);
+   
 
     
     return 0;
